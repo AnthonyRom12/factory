@@ -14,6 +14,7 @@ level = 1
 upgrade_cooldown = 0
 
 
+# Добавление очков
 def add_points():
     global points
     while True:
@@ -24,6 +25,7 @@ def add_points():
 Thread(target=add_points, daemon=True).start()
 
 
+# ADB function
 def execute_adb_command(command):
     adb = adbutils.AdbClient()
     devices = adb.device_list()
@@ -34,11 +36,13 @@ def execute_adb_command(command):
     return False
 
 
+# Отображение
 @app.route('/')
 def index():
     return render_template('index.html', points=points, total_points=total_points, level=level)
 
 
+# Забрать очки
 @app.route('/collect', methods=['POST'])
 def collect_points():
     global points, total_points, button_active, last_collect_time
@@ -54,13 +58,14 @@ def collect_points():
     return jsonify(success=False)
 
 
+#
 @app.route('/check_timer', methods=['GET'])
 def check_timer():
     global button_active, last_collect_time, upgrade_cooldown
     time_since_collect = time.time() - last_collect_time
-    time_until_collect = max(0, int(7200 - time_since_collect))
+    time_until_collect = max(0, int(7200 - time_since_collect))  # 2 часа
     time_since_upgrade = time.time() - upgrade_cooldown
-    time_until_upgrade = max(0, int(86400 - time_since_upgrade))
+    time_until_upgrade = max(0, int(86400 - time_since_upgrade))  # 24 часа
     if not button_active and time_since_collect >= 7200:
         button_active = True
     return jsonify(button_active=button_active, time_until_collect=time_until_collect, time_until_upgrade=time_until_upgrade, points=points, total_points=total_points)
