@@ -69,6 +69,7 @@ project_directory/
 │   └── index.html
 └── static/
     └── script.js
+    
 - app.py: Главный файл приложения Flask, содержащий маршруты и логику приложения.
 - templates/index.html: HTML-шаблон для отображения веб-страницы.
 - static/script.js: JavaScript для взаимодействия с сервером и обновления данных на странице в реальном времени.
